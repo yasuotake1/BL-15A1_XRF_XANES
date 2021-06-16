@@ -2,9 +2,6 @@ import ij.*;
 import ij.gui.*;
 import ij.plugin.*;
 import ij.process.*;
-import ij.WindowManager.*;
-
-import java.awt.*;
 import java.io.*;
 import java.util.*;
 
