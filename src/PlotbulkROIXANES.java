@@ -70,14 +70,12 @@ public class PlotbulkROIXANES implements PlugIn {
 		ArrayList<String> rows = new ArrayList<String>();
 
 		try{	
-			FileReader in = new FileReader(dir + eneFile);
-			BufferedReader br = new BufferedReader(in);
+			BufferedReader br = new BufferedReader(new FileReader(dir + eneFile));
 			String line;
 			while ((line = br.readLine()) != null) {
 				rows.add(line);
 			}
 			br.close();
-			in.close();
 
 	    } catch(IOException e) {
 	            System.err.println(e.getMessage());
