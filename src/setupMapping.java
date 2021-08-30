@@ -29,7 +29,7 @@ public class setupMapping implements PlugIn {
 	public static double zoom = 200; 
 	public static boolean[] listUse = {true, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 	public static String defaultDir = "";
-	public static String PropPath = "plugins/BL-15A1_XRF_XANES/prop.config";
+	public static String PropPath = "plugins/BL-15A1_XRF_XANES/XRFXANESProps.config";
 
 	public void run(String arg) {
 		String[] listStage = {"Default", "Reversed"};
@@ -110,7 +110,7 @@ public class setupMapping implements PlugIn {
 			target.defaultDir = prop.getProperty("defaultDir");
 			
 		} catch (FileNotFoundException e) {
-			// ƒfƒtƒHƒ‹ƒg’l‚ðŽg—p‚·‚é
+			// ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½lï¿½ï¿½ï¿½gï¿½pï¿½ï¿½ï¿½ï¿½
 			target.listSuffixes = listSuffixes;
 			target.stageConf = stageConf;
 			target.scaleConf = scaleConf;
