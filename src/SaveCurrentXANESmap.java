@@ -48,16 +48,16 @@ public class SaveCurrentXANESmap implements PlugIn {
 			String line;
 			
 			while ((line = br.readLine()) != null) {
-				rows.add(line);
+				if(!line.trim().isEmpty())
+					rows.add(line);
 			}
 			br.close();
 			in.close();
-
-	        } catch(IOException e) {
+		} catch(IOException e) {
 	            System.err.println(e.getMessage());
 	            IJ.error(e.getMessage());
 	            return;
-	        }
+		}
 		boolean is9809 = (rows.get(0)).trim().startsWith("9809");
 		if(is9809){
 			do{
