@@ -1,21 +1,10 @@
 import ij.*;
 import ij.plugin.*;
-import ij.process.ImageProcessor;
-
-import java.awt.*;
-import java.awt.event.*;
-
-import javax.swing.*;
-import ij.WindowManager.*;
-
 import java.io.*;
 import java.util.*;
+import ij.io.*;
 
-import ij.io.FileSaver;
-import ij.io.OpenDialog;
-
-
-public class SavecurrentXANESmap implements PlugIn {
+public class SaveCurrentXANESmap implements PlugIn {
 
 	public void run(String arg) {
 		// plugins メニューには表示されないクラス
@@ -66,6 +55,8 @@ public class SavecurrentXANESmap implements PlugIn {
 
 	        } catch(IOException e) {
 	            System.err.println(e.getMessage());
+	            IJ.error(e.getMessage());
+	            return;
 	        }
 		boolean is9809 = (rows.get(0)).trim().startsWith("9809");
 		if(is9809){
@@ -95,10 +86,8 @@ public class SavecurrentXANESmap implements PlugIn {
 		String dirTXW = dir + "TXW" + File.separator;
 		File target = new File(dirTXW);
 		if(!target.exists()){
-			target.mkdir();
-		}
-		if(!target.exists()){
-			IJ.error("Unable to create directory!");
+			if(!target.mkdir())
+				IJ.error("Unable to create directory!");
 		}
 
 		String prefix = fName.replace(".tif", "") + "_";
@@ -108,13 +97,9 @@ public class SavecurrentXANESmap implements PlugIn {
 //		IJ.run("Stack to Images");
 
 		for(int i=0; i<labels.length; i++) {
-			String eStr = String.format("%.2f", energies[i]);
-			while(eStr.length() < 8) {
-				eStr = "0" + eStr;
-			}
 			ImagePlus imp2 = new ImagePlus(stack.getSliceLabel(i + 1), stack.getProcessor(i + 1));
 			FileSaver fs = new FileSaver(imp2);
-			fs.saveAsTiff(dirTXW + prefix + eStr + suffix);
+			fs.saveAsTiff(dirTXW + prefix + String.format("%08.2f", energies[i]) + suffix);
 			imp2.close();
 		}
 

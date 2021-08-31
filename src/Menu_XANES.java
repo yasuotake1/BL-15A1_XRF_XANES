@@ -126,7 +126,7 @@ public class Menu_XANES extends JFrame implements WindowListener,PlugIn {
 	        
 			public void actionPerformed(ActionEvent e){
 				imp = WindowManager.getCurrentImage();
-				SavecurrentXANESmap saveXANESmap = new SavecurrentXANESmap();
+				SaveCurrentXANESmap saveXANESmap = new SaveCurrentXANESmap();
 				saveXANESmap.method(imp, strDir, strName);
 			}
 	        });
