@@ -38,25 +38,25 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 		btRaw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (btRawName == "Show Raw Data") {
+					btRawName = "Close Raw Data";
 					// Show raw data
 					for (int i = 0; i < impsRaw.length; i++) {
 						if (impsRaw[i] != null)
 							impsRaw[i].show();
 					}
-					IJ.run("Tile");
 					IJ.run("Main Window [enter]");
-					btRawName = "Close Raw Data";
 					MenuFrame.toFront();
+					IJ.run("Tile");
 				} else {
+					btRawName = "Show Raw Data";
 					// Close raw data
 					for (int i = 0; i < impsRaw.length; i++) {
 						if (impsRaw[i] != null)
 							impsRaw[i].hide();
 					}
-					IJ.run("Tile");
 					IJ.run("Main Window [enter]");
-					btRawName = "Show Raw Data";
 					MenuFrame.toFront();
+					IJ.run("Tile");
 				}
 				btRaw.setText(btRawName);
 			}
@@ -69,25 +69,25 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 		btNormalized.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (btNormalizedName == "Show Normalized Data") {
+					btNormalizedName = "Close Normalized Data";
 					// Show normalized data
 					for (int i = 0; i < impsNorm.length; i++) {
 						if (impsNorm[i] != null)
 							impsNorm[i].show();
 					}
-					IJ.run("Tile");
 					IJ.run("Main Window [enter]");
-					btNormalizedName = "Close Normalized Data";
 					MenuFrame.toFront();
+					IJ.run("Tile");
 				} else {
+					btNormalizedName = "Show Normalized Data";
 					// Close processed data
 					for (int i = 0; i < impsNorm.length; i++) {
 						if (impsNorm[i] != null)
 							impsNorm[i].hide();
 					}
-					IJ.run("Tile");
 					IJ.run("Main Window [enter]");
-					btNormalizedName = "Show Normalized Data";
 					MenuFrame.toFront();
+					IJ.run("Tile");
 				}
 				btNormalized.setText(btNormalizedName);
 			}
