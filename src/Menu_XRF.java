@@ -111,7 +111,7 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 
 			public void actionPerformed(ActionEvent e) {
 				CreateCorrelationMask CorrelationM = new CreateCorrelationMask();
-//				CorrelationM.method(idCorrSrc1,idCorrSrc2,arr1,arr2,value);
+				// CorrelationM.method(idCorrSrc1,idCorrSrc2,arr1,arr2,value);
 				CorrelationM.method(idCorrSrc1, idCorrSrc2, prop.zoom);
 			}
 		});
