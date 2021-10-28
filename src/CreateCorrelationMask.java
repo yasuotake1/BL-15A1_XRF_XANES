@@ -1,73 +1,12 @@
 import ij.*;
 import ij.gui.*;
-import ij.plugin.*;
-import ij.process.*;
-import ij.WindowManager.*;
-
-import java.io.*;
-import java.util.*;
-
-import ij.io.OpenDialog;
-import ij.plugin.frame.*;
-import ij.plugin.filter.*;
-
-import ij.util.Tools;
-
-import ij.macro.*;
 import ij.measure.*;
-
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.KeyEvent;
-import javax.imageio.ImageIO;
-
-/*
-
-import ij.plugin.filter.Filler;
-import ij.plugin.frame.*;
-import ij.plugin.filter.*;
-import ij.*;
-import ij.IJ;
-import ij.ImagePlus;
-import ij.util.Tools;
-
 import ij.plugin.*;
 import ij.plugin.frame.*;
-import ij.plugin.ContrastEnhancer;
-import ij.plugin.PlugIn;
-import ij.plugin.frame.RoiManager;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import java.util.*;
-
-import ij.gui.*;
-import ij.gui.Plot;
-import ij.gui.GenericDialog;
-import ij.gui.PlotWindow;
-import ij.gui.ProgressBar;
-
 import ij.process.*;
-import ij.WindowManager.*;
-import ij.io.OpenDialog;
-import ij.macro.*;
-import ij.macro.Interpreter;
-import ij.process.ImageProcessor;
-import ij.measure.*;
-import ij.measure.ResultsTable;
-
-import java.io.*;
+import java.util.*;
 import java.awt.*;
-import java.awt.image.*;
-import java.awt.image.BufferedImage;
-import java.awt.event.KeyEvent;
-import java.util.Vector;
 
-import java.util.ArrayList;
-import javax.imageio.ImageIO;
-*/
 public class CreateCorrelationMask implements PlugIn {
 
 	public void run(String arg) {

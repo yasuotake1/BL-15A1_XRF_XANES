@@ -67,7 +67,6 @@ public class Loadsinglemap implements PlugIn {
 				} else {
 					IJ.run("Properties...", "unit=pixel pixel_width=1 pixel_height=1 origin=0,0");
 				}
-
 				IJ.run("Set... ", "zoom=" + prop.zoom);
 				IJ.run("Scale to Fit", "");
 			} else {

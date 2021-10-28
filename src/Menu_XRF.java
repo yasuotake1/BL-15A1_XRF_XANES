@@ -41,12 +41,12 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 					btRawName = "Close Raw Data";
 					// Show raw data
 					for (int i = 0; i < impsRaw.length; i++) {
-						if (impsRaw[i] != null)
+						if (impsRaw[i] != null) {
 							impsRaw[i].show();
+							impsRaw[i].setActivated();
+							IJ.run("Set... ", "zoom=" + prop.zoom);
+						}
 					}
-					IJ.run("Main Window [enter]");
-					MenuFrame.toFront();
-					IJ.run("Tile");
 				} else {
 					btRawName = "Show Raw Data";
 					// Close raw data
@@ -54,10 +54,11 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 						if (impsRaw[i] != null)
 							impsRaw[i].hide();
 					}
-					IJ.run("Main Window [enter]");
-					MenuFrame.toFront();
-					IJ.run("Tile");
 				}
+				IJ.run("Main Window [enter]");
+				MenuFrame.toFront();
+				if (WindowManager.getWindowCount() > 0)
+					IJ.run("Tile");
 				btRaw.setText(btRawName);
 			}
 		});
@@ -72,12 +73,12 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 					btNormalizedName = "Close Normalized Data";
 					// Show normalized data
 					for (int i = 0; i < impsNorm.length; i++) {
-						if (impsNorm[i] != null)
+						if (impsNorm[i] != null) {
 							impsNorm[i].show();
+							impsNorm[i].setActivated();
+							IJ.run("Set... ", "zoom=" + prop.zoom);
+						}
 					}
-					IJ.run("Main Window [enter]");
-					MenuFrame.toFront();
-					IJ.run("Tile");
 				} else {
 					btNormalizedName = "Show Normalized Data";
 					// Close processed data
@@ -85,10 +86,11 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 						if (impsNorm[i] != null)
 							impsNorm[i].hide();
 					}
-					IJ.run("Main Window [enter]");
-					MenuFrame.toFront();
-					IJ.run("Tile");
 				}
+				IJ.run("Main Window [enter]");
+				MenuFrame.toFront();
+				if (WindowManager.getWindowCount() > 0)
+					IJ.run("Tile");
 				btNormalized.setText(btNormalizedName);
 			}
 		});

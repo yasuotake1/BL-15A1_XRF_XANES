@@ -12,20 +12,10 @@
 
 import ij.*;
 import ij.gui.*;
+import ij.io.OpenDialog;
 import ij.plugin.*;
-import ij.process.*;
-import ij.WindowManager.*;
-
 import java.io.*;
 import java.util.*;
-
-import ij.io.OpenDialog;
-
-import ij.macro.Interpreter;
-import ij.measure.ResultsTable;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
-
 
 public class CorrelationPlot implements PlugIn {
 
@@ -41,6 +31,8 @@ public class CorrelationPlot implements PlugIn {
 		gd.addChoice("Image 1: ", wList, wList[0]);
 		gd.addChoice("Image 2: ", wList, wList[1]);
 		gd.showDialog();
+		if (gd.wasCanceled())
+			return;
 
 		ImagePlus imp1 = WindowManager.getImage(gd.getNextChoice());
 		ImagePlus imp2 = WindowManager.getImage(gd.getNextChoice());
