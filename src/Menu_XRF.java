@@ -8,8 +8,8 @@ import java.awt.event.*;
 public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 	ImagePlus[] impsRaw;
 	ImagePlus[] impsNorm;
-	ArrayList<Integer> idCorrSrc1 = new ArrayList<Integer>();
-	ArrayList<Integer> idCorrSrc2 = new ArrayList<Integer>();
+	ArrayList<CorrelationPlot> corrPlots = new ArrayList<CorrelationPlot>();
+	ArrayList<Integer> corrIDs = new ArrayList<Integer>();
 
 	String btRawName = "Close Raw Data";
 	String btNormalizedName = "Close Normalized Data";
@@ -101,8 +101,12 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 		bt3.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				CorrelationPlot Correlation = new CorrelationPlot();
-				Correlation.method(idCorrSrc1, idCorrSrc2);
+				CorrelationPlot corr = new CorrelationPlot();
+				corr.method1(corrPlots.size());
+				if(corr.id<0) {
+					corrPlots.add(corr);
+					corrIDs.add(corr.id);
+				}
 			}
 		});
 
@@ -112,9 +116,17 @@ public class Menu_XRF extends JFrame implements WindowListener, PlugIn {
 		bt4.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				CreateCorrelationMask CorrelationM = new CreateCorrelationMask();
-				// CorrelationM.method(idCorrSrc1,idCorrSrc2,arr1,arr2,value);
-				CorrelationM.method(idCorrSrc1, idCorrSrc2, prop.zoom);
+				int idx = -1;
+				for(int j = 0;j<corrIDs.size();j++) {
+					if(corrIDs.get(j)==WindowManager.getCurrentImage().getID()) {
+						idx=j;
+						break;
+					}
+				}
+				if(idx==-1) {
+					return;
+				}
+				corrPlots.get(idx).method2(prop.zoom);
 			}
 		});
 
