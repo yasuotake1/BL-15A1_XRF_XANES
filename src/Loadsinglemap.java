@@ -48,18 +48,19 @@ public class Loadsinglemap implements PlugIn {
 			}
 		}
 
-		double[] scale = setupMapping.getScanInfo(dir, prefix, prop);
+		double[] scale = XRFXANESCommon.getScanInfo(dir, prefix, prop);
 		ImagePlus[] listImps = new ImagePlus[listChName.length];
 
 		for (int i = 0; i < listFiles.length; i++) {
 			if (listFiles[i].length() > 0) {
 				String file = dir + listFiles[i];
 				listImps[i] = IJ.openImage(file);
-				listImps[i].show();
+				listImps[i].getProcessor().flipVertical();
 				if (!bRev) {
-					IJ.run("Flip Horizontally");
+					listImps[i].getProcessor().flipHorizontal();
 				}
-				IJ.run("Flip Vertically");
+				listImps[i].show();
+				listImps[i].setActivated();
 				if (!Double.isNaN(scale[0]) && !Double.isNaN(scale[1]) && !Double.isNaN(scale[2])
 						&& !Double.isNaN(scale[3])) {
 					IJ.run("Properties...", "unit=" + prop.scaleConf + " pixel_width=" + scale[0] + " pixel_height="

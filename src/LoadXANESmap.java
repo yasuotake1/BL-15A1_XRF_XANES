@@ -6,6 +6,7 @@ import ij.io.DirectoryChooser;
 import ij.io.FileSaver;
 import ij.process.ImageProcessor;
 import java.io.File;
+import java.nio.file.Paths;
 
 public class LoadXANESmap implements PlugIn {
 	String dirImg = "";
@@ -67,69 +68,68 @@ public class LoadXANESmap implements PlugIn {
 		String FileTitle = "";
 
 		double[] scale = { Double.NaN, Double.NaN, Double.NaN, Double.NaN };
+		double[] energies;
 		ImagePlus[] listImps = new ImagePlus[listChName.length];
 
 		for (int i = 0; i < listSuffixes.length; i++) {
-			if (listSuffixes.length > 0 && listFiles.length > 0) {
-				if (listFiles[i] != "") {
+			if (listFiles[i] != "") {
 
-					String[] sublist = (listFiles[i]).split(",", 0);
-					int[] Subsublist = new int[sublist.length];
+				String[] sublist = (listFiles[i]).split(",", 0);
+				int[] Subsublist = new int[sublist.length];
 
-					for (int h = 1; h < sublist.length; h++) {
-
-						sublist[h] = (sublist[h]).replace(listSuffixes[i], "");
-						int StrIndex = (sublist[h]).lastIndexOf("_");
-						int StrLength = (sublist[h]).length();
-						Subsublist[h] = Integer.parseInt((sublist[h]).substring(StrIndex + 1, StrLength));
-						FileTitle = (sublist[h]).substring(0, StrIndex + 1);
-
-					}
-					Subsublist[0] = 0;
-
-					Arrays.sort(Subsublist);
-
-					for (int k = 1; k < sublist.length; k++) {
-
-						sublist[k] = FileTitle + String.format("%03d", Subsublist[k]) + listSuffixes[i];
-					}
-
-					prefix = FileTitle.replace("_qscan_", "");
-					if (Double.isNaN(scale[0]) && Double.isNaN(scale[1]) && Double.isNaN(scale[2])
-							&& Double.isNaN(scale[3]))
-						scale = setupMapping.getScanInfo(dirImg, prefix + "_qscan_001", prop);
-					ImageStack stack = new ImageStack();
-					TextReader tr = new TextReader();
-					ImageProcessor ip;
-					for (int j = 1; j < sublist.length; j++) {
-						String file = dirImg + sublist[j];
-						ip = tr.open(file);
-						if (j == 1) {
-							stack = new ImageStack(ip.getWidth(), ip.getHeight());
-						}
-						stack.addSlice(ip);
-					}
-					listImps[i] = new ImagePlus(prefix + "_" + listChName[i], stack);
-					listImps[i].show();
-					if (!bRev) {
-						IJ.run(listImps[i], "Flip Horizontally", "stack");
-					}
-					IJ.run(listImps[i], "Flip Vertically", "stack");
-					if (!Double.isNaN(scale[0]) && !Double.isNaN(scale[1]) && !Double.isNaN(scale[2])
-							&& !Double.isNaN(scale[3])) {
-						IJ.run("Properties...", "unit=" + prop.scaleConf + " pixel_width=" + scale[0] + " pixel_height="
-								+ scale[1] + " origin=" + scale[2] + "," + scale[3]);
-					} else {
-						IJ.run("Properties...", "unit=pixel pixel_width=1 pixel_height=1 origin=0,0");
-					}
-					IJ.run("Set... ", "zoom=" + prop.zoom);
-					IJ.run("Scale to Fit", "");
-				} else {
-					listImps[i] = null;
+				Subsublist[0] = 0;
+				for (int h = 1; h < sublist.length; h++) {
+					sublist[h] = (sublist[h]).replace(listSuffixes[i], "");
+					int StrIndex = (sublist[h]).lastIndexOf("_");
+					int StrLength = (sublist[h]).length();
+					Subsublist[h] = Integer.parseInt((sublist[h]).substring(StrIndex + 1, StrLength));
+					FileTitle = (sublist[h]).substring(0, StrIndex + 1);
 				}
+				Arrays.sort(Subsublist);
+				for (int k = 1; k < sublist.length; k++) {
+					sublist[k] = FileTitle + String.format("%03d", Subsublist[k]) + listSuffixes[i];
+				}
+
+				prefix = FileTitle.substring(0, FileTitle.indexOf("_qscan_"));
+				if (Double.isNaN(scale[0]) && Double.isNaN(scale[1]) && Double.isNaN(scale[2])
+						&& Double.isNaN(scale[3]))
+					scale = XRFXANESCommon.getScanInfo(dirImg, prefix + "_qscan_001", prop);
+				energies = XRFXANESCommon.readEnergies9809(Paths.get(dirImg + prefix));
+				ImageStack stack = new ImageStack();
+				TextReader tr = new TextReader();
+				ImageProcessor ip;
+				for (int j = 1; j < sublist.length; j++) {
+					String file = dirImg + sublist[j];
+					ip = tr.open(file);
+					if (j == 1) {
+						stack = new ImageStack(ip.getWidth(), ip.getHeight());
+					}
+					if (!bRev) {
+						ip.flipHorizontal();
+					}
+					ip.flipVertical();
+					stack.addSlice(ip);
+				}
+				listImps[i] = new ImagePlus(prefix + "_" + listChName[i], stack);
+				listImps[i].show();
+				listImps[i].setActivated();
+				if (!Double.isNaN(scale[0]) && !Double.isNaN(scale[1]) && !Double.isNaN(scale[2])
+						&& !Double.isNaN(scale[3])) {
+					IJ.run("Properties...", "unit=" + prop.scaleConf + " pixel_width=" + scale[0] + " pixel_height="
+							+ scale[1] + " origin=" + scale[2] + "," + scale[3]);
+				} else {
+					IJ.run("Properties...", "unit=pixel pixel_width=1 pixel_height=1 origin=0,0");
+				}
+				if (energies != null) {
+					XRFXANESCommon.setPropEnergies(listImps[i], energies);
+				}
+				IJ.run("Set... ", "zoom=" + prop.zoom);
+				IJ.run("Scale to Fit", "");
+			} else {
+				listImps[i] = null;
 			}
 		}
-		
+
 		for (int i = 0; i < listImps.length; i++) {
 			if (listImps[i] != null) {
 				listImps[i].setTitle(prefix + "_" + listChName[i] + ".tif");
@@ -138,14 +138,14 @@ public class LoadXANESmap implements PlugIn {
 				fs.saveAsJpeg(dirImg + listImps[i].getTitle().replace(".tif", ".jpg"));
 			}
 		}
-		
+
 		return listImps;
 	}
-	
+
 	public ImagePlus[] method2(ImagePlus[] listImps, String[] listNormalizedName, XRFXANESProps prop) {
 		ImagePlus[] listNormImps = new ImagePlus[listNormalizedName.length];
 		ImageCalculator ic = new ImageCalculator();
-		
+
 		for (int i = 0; i < listNormImps.length; i++) {
 			if (listImps[0] != null && listImps[i + 1] != null) {
 				listNormImps[i] = ic.run("Divide create 32-bit stack", listImps[i + 1], listImps[0]);
@@ -165,7 +165,7 @@ public class LoadXANESmap implements PlugIn {
 				listNormImps[i] = null;
 			}
 		}
-		
+
 		for (int i = 0; i < listNormImps.length; i++) {
 			if (listNormImps[i] != null) {
 				listNormImps[i].setTitle(prefix + "_" + listNormalizedName[i] + ".tif");
@@ -175,6 +175,6 @@ public class LoadXANESmap implements PlugIn {
 			}
 		}
 
-		return listNormImps;		
+		return listNormImps;
 	}
 }

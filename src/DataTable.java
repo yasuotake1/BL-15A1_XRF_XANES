@@ -12,7 +12,6 @@ public class DataTable implements PlugIn {
 	static long[][] convData;
 	
 	public void run(String arg) {
-		// plugins メニューには表示されないクラス
 	}
 
 	public static boolean Assign(String path, int idxX, String labelX, int idxY, String labelY) {

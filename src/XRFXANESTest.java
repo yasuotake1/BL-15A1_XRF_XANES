@@ -9,8 +9,7 @@ import ij.plugin.*;
 public class XRFXANESTest implements PlugIn {
 
 	public void run(String arg) {
-		ImagePlus impFlat = NewImage.createByteImage("Flat", 100, 100, 1, 0);
-		impFlat.show();
-		
+		String str = null;
+		IJ.log(str.split(",")[0]);
 	}
 }
